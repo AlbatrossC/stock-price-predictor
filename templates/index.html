@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Price Predictor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Stock Price Predictor</h1>
+            <p class="text-gray-600">Enter a stock symbol to get price predictions and analysis</p>
+            <button id="aboutUsBtn" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                About Us
+            </button>
+        </div>
+
+        <form id="predictionForm" class="flex gap-4">
+            <div class="stock-input-container">
+                <input id="stockInput" name="stock_symbol" 
+                       placeholder="Enter stock symbol (e.g., AAPL)" 
+                       class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                       required>
+                <div id="companySuggestions" class="company-suggestions hidden"></div>
+            </div>
+            <button type="submit" 
+                    class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors">
+                Predict
+            </button>
+        </form>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden">
+            <div class="flex justify-center items-center p-8">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            </div>
+        </div>
+
+        <!-- Prediction Results -->
+        <div id="results" class="hidden">
+            <!-- Prediction Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Price Direction</h3>
+                    <p id="prediction" class="text-3xl font-bold"></p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Confidence</h3>
+                    <p id="confidence" class="text-3xl font-bold"></p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Model Accuracy</h3>
+                    <p id="accuracy" class="text-3xl font-bold"></p>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="grid grid-cols-1 gap-8">
+                <!-- Price and Moving Averages Chart -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Price and Moving Averages</h3>
+                    <canvas id="priceChart"></canvas>
+                </div>
+                <!-- RSI Chart -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Relative Strength Index (RSI)</h3>
+                    <canvas id="rsiChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Modal -->
+    <div id="aboutUsModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-3/4 md:w-1/2 relative">
+            <button id="closeModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">
+                &times;
+            </button>
+            <h2 class="text-xl font-bold mb-4">About Us</h2>
+            <p class="text-gray-700">
+                Stock Price Predictor is our 2nd-year Project-Based Learning (PBL) project, developed by Atharva Jadhav, Soham Jadhav, Swaraj Jagtap, and Divyanshu Mishra. 
+                It aims to predict stock prices using advanced algorithms and data analysis techniques. For queries, reach out to us at:
+            </p>
+            <ul class="mt-4 text-gray-700 list-disc pl-5">
+                <li>Atharva Jadhav: <a href="mailto:atharva_jadhav_aids@moderncoe.edu.in" class="text-blue-500 hover:underline">atharva_jadhav_aids@moderncoe.edu.in</a></li>
+                <li>Soham Jadhav: <a href="mailto:soham_jadhav_aids@moderncoe.edu.in" class="text-blue-500 hover:underline">soham_jadhav_aids@moderncoe.edu.in</a></li>
+                <li>Swaraj Jagtap: <a href="mailto:swaraj_jagtap_aids@moderncoe.edu.in" class="text-blue-500 hover:underline">swaraj_jagtap_aids@moderncoe.edu.in</a></li>
+                <li>Divyanshu Mishra: <a href="mailto:divyanshu_mishra_aids@moderncoe.edu.in" class="text-blue-500 hover:underline">divyanshu_mishra_aids@moderncoe.edu.in</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</body>
+</html>
